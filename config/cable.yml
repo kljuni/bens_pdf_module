@@ -1,0 +1,14 @@
+development:
+  adapter: redis
+  url: redis://redis:6379/0
+  channel_prefix: bens_pdf_module_development
+
+test:
+  adapter: test
+
+production:
+  adapter: redis
+  url: redis://redis:6379/0
+  channel_prefix: bens_pdf_module_production
+  pool_size: 5
+  timeout: 5
