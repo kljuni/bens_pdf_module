@@ -26,7 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_03_135022) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["document_hash"], name: "index_document_data_on_document_hash", unique: true
-    t.check_constraint "parse_state::text = ANY (ARRAY['uploaded'::character varying, 'queued'::character varying, 'processing'::character varying, 'parsed'::character varying, 'imported'::character varying, 'failed'::character varying]::text[])", name: "check_state"
+    t.check_constraint "parse_state::text = ANY (ARRAY['uploaded'::character varying::text, 'queued'::character varying::text, 'processing'::character varying::text, 'parsed'::character varying::text, 'imported'::character varying::text, 'failed'::character varying::text])", name: "check_state"
   end
 
   create_table "documents", force: :cascade do |t|
