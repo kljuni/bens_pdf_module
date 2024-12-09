@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: bens_project
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -19,8 +19,8 @@ services:
       - db
       - redis
     environment:
-      DATABASE_URL: postgres://user:password@db/bens_project
-      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@db/${POSTGRES_DB}
+      REDIS_URL: ${REDIS_URL}
 
   redis:
     image: redis:alpine
@@ -34,8 +34,8 @@ services:
       - redis
       - db
     environment:
-      REDIS_URL: redis://redis:6379/0
-      DATABASE_URL: postgres://user:password@db/bens_project
+      REDIS_URL: ${REDIS_URL}
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@db/${POSTGRES_DB}
 
 volumes:
   db_data:
