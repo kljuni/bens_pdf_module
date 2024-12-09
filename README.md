@@ -12,7 +12,7 @@ BensPdfModule is a Ruby on Rails application designed for processing PDF documen
 ### 1. Clone the Repository
 First, clone the repository to your local machine:
 ```
-git clone https://github.com/your-username/bens_pdf_module.git
+git clone https://github.com/kljuni/bens_pdf_module.git
 cd bens_pdf_module
 ```
 
