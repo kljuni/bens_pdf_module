@@ -5,7 +5,7 @@ Rails.application.routes.draw do
         member do
           post :import
           get :download
-          patch :update_parse_status
+          patch :parse_result
         end
       end
     end

@@ -14,32 +14,31 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_03_135022) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "documents", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "original_filename", null: false
-    t.string "stored_name", null: false
+  create_table "document_data", force: :cascade do |t|
     t.string "document_hash", null: false
-    t.string "state", default: "uploaded", null: false
-    t.datetime "upload_date", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
-    t.boolean "import_called", default: false
     t.binary "pdf_data", null: false
+    t.jsonb "result_data"
+    t.string "parse_state", default: "uploaded", null: false
+    t.integer "parse_result_status", default: 0, null: false
+    t.boolean "import_called", default: false
+    t.text "failed_state_reason"
+    t.text "parse_error_message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["document_hash"], name: "index_documents_on_document_hash", unique: true
-    t.index ["state"], name: "index_documents_on_state"
-    t.index ["stored_name"], name: "index_documents_on_stored_name", unique: true
-    t.index ["user_id"], name: "index_documents_on_user_id"
-    t.check_constraint "state::text = ANY (ARRAY['uploaded'::character varying, 'queued'::character varying, 'processing'::character varying, 'parsed'::character varying, 'imported'::character varying, 'failed'::character varying]::text[])", name: "check_state"
+    t.index ["document_hash"], name: "index_document_data_on_document_hash", unique: true
+    t.check_constraint "parse_state::text = ANY (ARRAY['uploaded'::character varying, 'queued'::character varying, 'processing'::character varying, 'parsed'::character varying, 'imported'::character varying, 'failed'::character varying]::text[])", name: "check_state"
   end
 
-  create_table "parse_results", force: :cascade do |t|
-    t.bigint "document_id", null: false
-    t.jsonb "result_data", default: "{}", null: false
-    t.integer "parse_status", default: 0, null: false
-    t.text "error_message"
+  create_table "documents", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "document_data_id", null: false
+    t.string "original_filename", null: false
+    t.string "stored_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["document_id"], name: "index_parse_results_on_document_id"
+    t.index ["document_data_id"], name: "index_documents_on_document_data_id"
+    t.index ["stored_name"], name: "index_documents_on_stored_name", unique: true
+    t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -49,6 +48,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_03_135022) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "documents", "document_data", column: "document_data_id"
   add_foreign_key "documents", "users"
-  add_foreign_key "parse_results", "documents"
 end
