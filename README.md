@@ -24,16 +24,16 @@ POSTGRES_DB=
 REDIS_URL=
 ```
 
-### 3. Build and Start the Application
-Use docker compose to build and start the application. This will set up the web server, database, and any other services defined in the `docker-compose.yml` file.
-
-```
-docker compose up --build
-```
-
-### 5. Database Setup
-To set up the database, run the following command in a new terminal window (make sure the Docker containers are still running):
+### 3. Database Setup
+To set up the database, run the following commands.
 ```
 docker compose run web ./bin/rails db:create db:migrate
 docker compose run web ./bin/rails db:seed
+```
+
+### 4. Build and Start the server
+Use docker compose to build and start the server.
+
+```
+docker compose up --build
 ```
